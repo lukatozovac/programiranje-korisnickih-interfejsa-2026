@@ -36,6 +36,3 @@
     <RouterView :key="$route.fullPath" />
   </div>
 </template>
-
-
-

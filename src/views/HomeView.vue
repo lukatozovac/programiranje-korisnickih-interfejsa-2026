@@ -20,7 +20,7 @@ FlightService.getDepatures()
   })
 
 // Funkcija pretrage
-watch(search.value, () => {
+watch(search, () => {
   flitered.value = flights.value
     .filter(f => {
       const d = f.destination.toLowerCase()
@@ -42,11 +42,9 @@ watch(search.value, () => {
       if (search.value.from == 'any')
         return scheduled <= to
 
-
       return scheduled >= from && scheduled <= to
-    
     })
-})
+}, { deep: true })
 
 function resetFilters() {
   search.value = {
@@ -54,7 +52,6 @@ function resetFilters() {
     from: 'any',
     to: 'any'
   }
-  flitered.value = flights.value
 }
 
 function getAvailableDates() {
@@ -97,8 +94,6 @@ function getAvailableDates() {
       </div>
     </div>
   </div>
-
-
   <div class="row">
     <div class="col-12 col-md-3 mb-3" v-for="f in flitered">
       <div class="card text-center">
@@ -118,16 +113,14 @@ function getAvailableDates() {
     </div>
   </div>
 
-  <InfoCard title="Not found" v-if="flitered.length == 0 && flitered.length < flights.length">
-    <p class="text-center">
-      Couldn't find any flights for that criteria.
-    </p>
+  <InfoCard title="Not Found" v-if="flitered.length == 0 && flitered.length < flights.length">
+    <p>Couldn't find any departures for that criteria!</p>
     <button type="button" class="btn btn-primary" @click="resetFilters()">
       Reset Filters
     </button>
   </InfoCard>
 
   <InfoCard title="Loading" v-if="flights.length == 0">
-    Loading data ... please wait.
+    ✈️ Loading data.... please wait
   </InfoCard>
 </template>
