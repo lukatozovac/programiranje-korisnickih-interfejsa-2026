@@ -1,4 +1,14 @@
 <script setup lang="ts">
+import { UserService } from './services/user.service';
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+function logout(){
+  if(!confirm('Are you sure want to sign out?'))
+  UserService.logout()
+  router.push('/login')
+}
 
 </script>
 
@@ -15,7 +25,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <RouterLink class="nav-link" active-class="active" aria-current="page" to="/">
+            <RouterLink class="nav-link" active-class="active" to="/">
               <i class="fa-solid fa-house"></i> Home
             </RouterLink>
           </li>
@@ -24,6 +34,26 @@
               <i class="fa-solid fa-circle-info"></i> About
             </RouterLink>
           </li>
+          <template v-if="UserService.getActiveUser()">
+            <li class="nav-item">
+                <RouterLink class="nav-link" active-class="active" to="/user">
+                  <i class="fa-solid fa-circle-info"></i> Account
+              </RouterLink>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link" @click="UserService.logout()">
+                  <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </li>
+          </template>
+            
+          <template v-else>
+              <li class="nav-item">
+              <RouterLink class="nav-link" active-class="active"  to="/login">
+                <i class="fa-solid fa-right-to-bracket"></i> Login
+              </RouterLink>
+            </li>
+          </template>
         </ul>
         <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
