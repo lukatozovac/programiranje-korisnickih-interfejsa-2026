@@ -1,7 +1,5 @@
-export interface UserModel{
-    email: string
-    password: string
-    orders: {
+
+export interface OrderModel{
         flightId: number
         flightClass: 'f' | 'b' | 'e'
         tiketCount: number
@@ -9,6 +7,5 @@ export interface UserModel{
         createdAt: string
         paidAt: string | null
         deleteAt: string | null
-    }[]
-}
 
+}

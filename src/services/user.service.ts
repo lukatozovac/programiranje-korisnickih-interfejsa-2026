@@ -1,52 +1,64 @@
 import type { UserModel } from "@/models/user.model"
+import type { OrderModel } from "@/models/order.model"
 
 const USERS_KEY = 'pki_2026_users'
-const ACTIVE_USER_KEY = 'pki_2026_active' 
+const ACTIVE_USER_KEY = 'pki_2026_active'
 
-
-
-
-export class UserService{
+export class UserService {
 
     static getUsers(): UserModel[] {
-       if (localStorage.getItem(USERS_KEY) == null)
-        localStorage.setItem(USERS_KEY, JSON.stringify([
-    {
-        email: 'user@example.com',
-        password: 'user123',
-        orders: []
-    }
-        ]))
-    
-    return JSON.parse(localStorage.getItem(USERS_KEY)!)
+        if (localStorage.getItem(USERS_KEY) == null) {
+            localStorage.setItem(USERS_KEY, JSON.stringify([
+                {
+                    email: 'user@example.com',
+                    password: 'user123',
+                    orders: []
+                }
+            ]))
+        }
+
+        return JSON.parse(localStorage.getItem(USERS_KEY)!)
     }
 
     static login(email: string, password: string): boolean {
         const users = this.getUsers()
 
-        for(let user of users){
-            if(user.email == email && user.password == password){
+        for (let user of users) {
+            if (user.email == email && user.password == password) {
                 localStorage.setItem(ACTIVE_USER_KEY, email)
                 return true
-            }    
+            }
         }
+
         return false
     }
 
     static getActiveUser(): UserModel | null {
-        if (localStorage.getItem(ACTIVE_USER_KEY) == null){
-            return null
+        for (let user of this.getUsers()) {
+            if (user.email == localStorage.getItem(ACTIVE_USER_KEY)) {
+                return user
+            }
         }
-        
-        for(let user of this.getUsers()){
-            if(user.email == localStorage.getItem(ACTIVE_USER_KEY)){}
-            return user
-        }
+
         return null
     }
 
-    static logout(){
+    static logout() {
         localStorage.removeItem(ACTIVE_USER_KEY)
+    }
+
+    static addOrder(order: OrderModel){
+        const activeUser = this.getActiveUser()
+        const users = this.getUsers()
+        
+        if(activeUser){
+            for(let user of users){
+                if(user.email === activeUser.email){
+                    user.orders.push(order)
+                }
+            }
+        }
+        localStorage.setItem(USERS_KEY, JSON.stringify(users))
     }
 
 }

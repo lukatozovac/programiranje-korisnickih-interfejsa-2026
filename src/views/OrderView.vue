@@ -2,13 +2,20 @@
 import type { DetailsModel } from '@/models/details.mode';
 import { FlightService } from '@/services/flight.service';
 import { formatDate } from '@/services/utils';
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const details = ref<DetailsModel>()
 const route = useRoute()
+const router = useRoute()
 const id = Number(route.params.id)
 
+
+const order = ref({
+    flightClass: 'f',
+    id: id,
+    total: 1
+})
 
 FlightService.getDepartureDetails(id)
     .then(data => details.value = data)
@@ -30,6 +37,14 @@ function getDepartureList() {
 
     return departures
 }
+
+const price = computed(() => {
+    let perItem = 300
+    if(order.value.flightClass == 'b'){perItem = 200}
+    if(order.value.flightClass == 'e'){perItem = 80}
+    return perItem * order.value.total
+})
+
 </script>
 
 <template>
@@ -45,7 +60,7 @@ function getDepartureList() {
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-label">Choose flight class:</label>
-                        <select class="form-select">
+                        <select class="form-select" v-model="order.flightClass">
                             <option value="f">First Class</option>
                             <option value="b">Buissines Class</option>
                             <option value="e">Economy</option>
@@ -53,13 +68,16 @@ function getDepartureList() {
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Choose departure time:</label>
-                        <select class="form-select">
+                        <select class="form-select" v-model="order.id">
                             <option v-for="item in getDepartureList()" :value="item.id">{{ item.text }}</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Ticket count:</label>
-                        <input type="number" class="form-control">
+                        <input type="number" class="form-control" v-model="order.total">
+                    </div>
+                    <div class="mb-3">
+                        <p>Total: {{ price }}</p>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -70,5 +88,5 @@ function getDepartureList() {
             </div>
         </div>
     </div>
-    <pre>{{ details }}</pre>
+    <pre>{{ order }}</pre>
 </template>

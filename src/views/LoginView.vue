@@ -1,17 +1,19 @@
 <script lang="ts" setup>
 import { UserService } from '@/services/user.service';
 import { ref } from 'vue';
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
 
 const email = ref<string>('')
 const password = ref<string>('')
+const router = useRouter()
 
 function login() {
-    if(UserService.login(email.value, password.value)){
-        const router = useRouter()
+    if (UserService.login(email.value, password.value)) {
+    
         router.push('/user')
         return
     }
+
     alert('Bad username or password!')
 }
 </script>

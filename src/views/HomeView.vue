@@ -105,13 +105,11 @@ function getAvailableDates() {
           <h6 class="card-subtitle mb-2 text-body-secondary">
             {{ formatDate(f.scheduledAt) }}
           </h6>
-          <RouterLink :to="`/details/${f.id}`" class="btn btn-primary btn-sm">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>  
-            Details
+          <RouterLink :to="`/details/${f.id}`" class="btn btn-primary btn-sm m-1">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Details
           </RouterLink>
-          <RouterLink :to="`/order/${f.id}`" class="btn btn-success btn-sm">
-            <i class="fa-solid fa-card-shopping"></i>
-            Order Now
+          <RouterLink :to="`/order/${f.id}`" class="btn btn-success btn-sm m-1">
+            <i class="fa-solid fa-cart-shopping"></i> Order Now
           </RouterLink>
         </div>
       </div>
