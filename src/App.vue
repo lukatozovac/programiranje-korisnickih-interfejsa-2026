@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import { UserService } from './services/user.service';
-import { useRouter } from 'vue-router'
 
 const router = useRouter()
-
-function logout(){
-  if(!confirm('Are you sure want to sign out?'))
+function logout() {
+  if (!confirm('Are you sure you want to sign out?'))
+    return
+  
   UserService.logout()
   router.push('/login')
 }
-
 </script>
 
 <template>
@@ -30,26 +30,27 @@ function logout(){
             </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" active-class="active" aria-current="page" to="/about">
+            <RouterLink class="nav-link" active-class="active" to="/about">
               <i class="fa-solid fa-circle-info"></i> About
             </RouterLink>
           </li>
+          <!-- KORISNIK JE ULOGOVAN -->
           <template v-if="UserService.getActiveUser()">
             <li class="nav-item">
-                <RouterLink class="nav-link" active-class="active" to="/user">
-                  <i class="fa-solid fa-circle-info"></i> Account
+              <RouterLink class="nav-link" active-class="active" to="/user">
+                <i class="fa-solid fa-user"></i> Account
               </RouterLink>
             </li>
             <li class="nav-item">
-                <button type="button" class="nav-link" @click="UserService.logout()">
-                  <i class="fa-solid fa-right-from-bracket"></i> Logout
-                </button>
+              <button type="button" class="nav-link" @click="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+              </button>
             </li>
           </template>
-            
+          <!-- KORISNIK NIJE ULOGOVAN -->
           <template v-else>
-              <li class="nav-item">
-              <RouterLink class="nav-link" active-class="active"  to="/login">
+            <li class="nav-item">
+              <RouterLink class="nav-link" active-class="active" to="/login">
                 <i class="fa-solid fa-right-to-bracket"></i> Login
               </RouterLink>
             </li>

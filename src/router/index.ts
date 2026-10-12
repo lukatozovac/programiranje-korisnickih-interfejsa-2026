@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '@/views/AboutView.vue'
-import Details from '@/views/Details.vue'
+import DetailsView from '@/views/Details.vue'
 import LoginView from '@/views/LoginView.vue'
 import UserView from '@/views/UserView.vue'
 import OrderView from '@/views/OrderView.vue'
@@ -12,56 +12,51 @@ const router = createRouter({
     {
       path: '/',
       component: HomeView,
-      meta:{
+      meta: {
         title: 'Home'
       }
     },
     {
       path: '/about',
       component: AboutView,
-      meta:{
+      meta: {
         title: 'About'
       }
     },
     {
       path: '/details/:id',
-      component: Details,
-      meta:{
+      component: DetailsView,
+      meta: {
         title: 'Details'
       }
     },
     {
       path: '/login',
-      component:LoginView,
-      meta:{
+      component: LoginView,
+      meta: {
         title: 'Login'
       }
     },
-    
     {
       path: '/user',
-      component:UserView,
-      meta:{
+      component: UserView,
+      meta: {
         title: 'Account'
       }
     },
-  
     {
       path: '/order/:id',
       component: OrderView,
-      meta:{
-        title: 'Order'
+      meta: {
+        title: 'New Order'
       }
     }
-
-
-
   ],
 })
 
 router.afterEach((to, from, next) => {
-  if(to.meta.title){
-    document.title = `${to.meta.title} :: PKI-2026`
+  if (to.meta.title) {
+    document.title = `${to.meta.title} :: PKI 2026`
   }
 })
 

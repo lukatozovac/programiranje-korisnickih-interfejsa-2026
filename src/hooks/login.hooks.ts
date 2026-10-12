@@ -1,14 +1,14 @@
-import { useRoute, useRouter } from "vue-router"
 import { UserService } from "@/services/user.service"
+import { useRoute, useRouter } from "vue-router"
 
-export function useLogin(){
+export function useLogin() {
     return () => {
-        const router = useRoute()
+        const router = useRouter()
         const route = useRoute()
 
-    if(!UserService.getActiveUser()){
-        sessionStorage.setItem('to', route.fullPath)
-      //  router.push('/login')
+        if (!UserService.getActiveUser()) {
+            sessionStorage.setItem('to', route.fullPath)
+            router.push('/login')
         }
     }
 }

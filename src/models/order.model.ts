@@ -1,11 +1,10 @@
-
-export interface OrderModel{
-        flightId: number
-        flightClass: 'f' | 'b' | 'e'
-        tiketCount: number
-        pricePerTicket: number
-        createdAt: string
-        paidAt: string | null
-        deleteAt: string | null
-
+export interface OrderModel {
+    flightId: number
+    flightClass: 'f' | 'b' | 'e'
+    ticketCount: number
+    pricePerTicket: number
+    isReturnTicket: boolean
+    createdAt: string
+    paidAt: string | null
+    deletedAt: string | null
 }

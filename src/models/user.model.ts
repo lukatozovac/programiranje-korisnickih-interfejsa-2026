@@ -1,14 +1,9 @@
-export interface UserModel{
+import type { OrderModel } from "./order.model"
+
+export interface UserModel {
     email: string
     password: string
-    orders: {
-        flightId: number
-        flightClass: 'f' | 'b' | 'e'
-        tiketCount: number
-        pricePerTicket: number
-        createdAt: string
-        paidAt: string | null
-        deleteAt: string | null
-    }[]
+    orders: OrderModel[]
 }
+
 
