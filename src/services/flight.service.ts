@@ -1,5 +1,5 @@
 import type { FlightModel } from "@/models/flight.model"
-import axios from "axios"
+import axios, { Axios, type AxiosResponse } from "axios"
 
 const client = axios.create({
     baseURL: 'https://flight.pequla.com/api/flight',
@@ -19,23 +19,7 @@ export class FlightService {
             }
         })
 
-        let flights = []
-
-        for (let obj of rsp.data) {
-            flights.push({
-                id: obj.id,
-                destination: obj.destination,
-                imageUrl: this.getImageUrl(obj),
-                flightNumber: obj.flightNumber,
-                scheduledAt: obj.scheduledAt,
-                estimatedAt: obj.estimatedAt
-            })
-        }
-
-        // Sortiranje po vremenu polaska
-        return flights.sort((a: any, b: any) =>
-            new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime()
-        )
+        return this.mapResponseToObject(rsp)
     }
 
     static async getDepartureDetails(id: number) {
@@ -73,6 +57,39 @@ export class FlightService {
             other: otherButFiltered
         }
     }
+
+    static async getDepartureByIds(ids: number[]){
+
+        const rsp = await client.request({
+            url: '/list',
+            method: 'POST',
+            data: ids
+        })
+
+        return this.mapResponseToObject(rsp)
+
+    }
+    
+    static async mapResponseToObject(rsp: AxiosResponse){
+        let flights = []
+
+        for (let obj of rsp.data) {
+            flights.push({
+                id: obj.id,
+                destination: obj.destination,
+                imageUrl: this.getImageUrl(obj),
+                flightNumber: obj.flightNumber,
+                scheduledAt: obj.scheduledAt,
+                estimatedAt: obj.estimatedAt
+            })
+        }
+
+        // Sortiranje po vremenu polaska
+        return flights.sort((a: any, b: any) =>
+            new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime()
+        )
+    }
+
 
     static getImageUrl(obj: any) {
         return `https://img.pequla.com/destination/${obj.destination.split(' ')[0].toLowerCase()}.jpg`
